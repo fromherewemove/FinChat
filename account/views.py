@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from account.models import CustomUser
+from account.models import Customuser
 from django.contrib.auth.views import LoginView, LogoutView
 # Create your views here.
 from django.contrib.auth import login
@@ -21,7 +21,7 @@ class CustomLogin(LoginView):
         return reverse_lazy('home')
 
 class Registration(CreateView):
-    model = CustomUser
+    model = Customuser
     fields = ['first_name', 'last_name', 'date_of_birth', 'bvn', 'email']
     success_url = reverse_lazy('home')
     template_name = 'account/register.html'
@@ -47,7 +47,7 @@ class Register(FormView):
         return super(Register, self).get(*args, **kwargs)
 
 class HomePage(LoginRequiredMixin, ListView):
-    model = CustomUser
+    model = Customuser
     context_object_name = 'home'
     template_name = 'account/home.html'
 
