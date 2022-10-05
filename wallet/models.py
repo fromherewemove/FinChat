@@ -1,5 +1,6 @@
 import email
 from django.db import models
+from account.models import Customuser
 
 # Create your models here.
 
@@ -7,12 +8,14 @@ from django.db import models
 
 # this wallet model will hold wallet information but is not a direct refrence to the actual virtual wallet
 class Wallet(models.Model):
-    first_name = models.CharField(max_length = 250)
-    last_name = models.CharField(max_length = 250)
-    email = models.EmailField(max_length = 254)
-    phone_number = models.CharField(max_length = 12)
-    bvn = models.CharField(max_length=11)
-    password = models.CharField(max_length=100)
+    user = models.ForeignKey(Customuser, on_delete = models.SET_NULL, null=True)
+    balance = models.DecimalField(max_digits=100, default=0, decimal_places=2)
+    account_name = models.CharField(max_length=250, default="")
+    account_number = models.IntegerField(default=0)
+    bank = models.CharField(max_length=100, default="")
+    phone_number = models.CharField(max_length=15)
+    password = models.CharField(max_length=200)
+    
     
     # additional fields will be added later
     

@@ -11,34 +11,33 @@ from .api import WalletClient
 
 wallet_client = WalletClient("f4hmj9qvpnp6", "2arf5cse254s")
 
-def generate(request):
+
+def create_wallet(request):
+    user = request.user
     new_wallet = wallet_client.generate_wallet(
-        first_name=request.user.first_name, 
-        last_name=request.user.last_name,
-        email=request.user.email,
-        bvn=request.user.customuser.bvn,
-        date_of_birth=request.user.customuser.date_of_birth.strftime('%Y-%m-%d')
+        first_name = user.first_name,
+        last_name = user.last_name,
+        email = user.email,
+        date_of_birth = user.date_of_birth.strftime('%Y-%m-%d'),
+        bvn = user.bvn
+
     )
-
-
-    # code '200' means it has succeded
-    # password and phone_number are automatically retrieved on generate
-    if new_wallet["response"]["responseCode"] == '200':
-        messages.success(request, "Account verified, wallet successfully created")
+    if new_wallet['reponse']['responseCode'] == '200':
+        user.verified = True
+        user.save()
         Wallet.objects.create(
-            first_name=request.user.first_name, 
-            last_name=request.user.last_name,
-            email=request.user.email,
-            bvn=request.user.customuser.bvn,
-            password=request.user.password, 
-            phone_number=new_wallet['data']['phoneNumber']
-        )
+            user = user,
+                    balance = new_wallet["data"]["availableBalance"],
+                    account_name = new_wallet["data"]["accountName"],
+                    account_number = new_wallet["data"]["accountNumber"],
+                    bank = new_wallet["data"]["bank"],
+                    phone_number = new_wallet["data"]["phoneNumber"],
+                    password = new_wallet["data"]["password"]
 
-        # sets the password in the wallet africa server as our users password
-        wallet_client.set_password(
-            phone_number=new_wallet['data']['phoneNumber'],
-            password=request.user.password
         )
+        messages.success(request, "Account Verified, success")
+        return redirect('account:home')
     else:
         messages.error(request, new_wallet["response"]["message"])
-    return HttpResponse("Wallet Generator")
+
+    return render(request, "wallet/hello.html")

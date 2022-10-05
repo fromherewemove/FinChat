@@ -16,7 +16,7 @@ class WalletClient:
         self.public_key = public_key
 
     def generate_wallet(self, first_name, last_name, email, bvn, date_of_birth):
-        url = self.sandbox + "/wallet/generate"
+        url = self.sandbox + "/self/generate"
         headers = {'Authorization': "Bearer " + self.public_key, "Content-Type": "application/json"}
         payload = {
             "firstName": first_name,
@@ -34,7 +34,7 @@ class WalletClient:
             raise e
 
     def get_balance(self, phone_number):
-        url = self.sandbox + "/wallet/balance"
+        url = self.sandbox + "/self/balance"
         headers = {'Authorization': "Bearer " + self.public_key, "Content-Type": "application/json"}
         payload = {
             "phoneNumber": phone_number,
