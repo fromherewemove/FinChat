@@ -3,13 +3,14 @@ from django.urls import path
 from .views import *
 from wallet.views import *
 from django.contrib.auth.views import LogoutView
+from wallet.views import generate
 urlpatterns = [
     path("", HomePage.as_view(), name='home'),
     path('logout/', LogoutView.as_view(next_page='login'),name='logout'),
     path("login/", CustomLogin.as_view(), name='login'),
     path('signup/', Register.as_view(), name='signup'),
-    path('register/', Registration.as_view(), name='register'), 
-    path("generate/", generate, name="generate")
+    path('register/', Registration.as_view(), name='register'),
+    path('generate/', generate, name = 'generate' )
 ]
 
 # added generate path to test out wallet africa

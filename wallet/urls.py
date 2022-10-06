@@ -1,6 +1,6 @@
-from .views import generate
 from django.urls import path
+from .views import profile
 
 urlpatterns = [
-    path("generate/", generate, name="generate")
+    path('', profile, name='wallet')
 ]
