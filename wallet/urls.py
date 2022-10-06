@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import create_wallet
+from .views import profile
 
 urlpatterns = [
-    path('', create_wallet, name='wallet')
+    path('', profile, name='wallet')
 ]
